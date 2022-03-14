@@ -20,7 +20,7 @@ import pymc as pm
 from pymc.tests.checks import close_to
 from pymc.tests.models import mv_simple, simple_model
 
-tol = 2.0 ** -11
+tol = 2.0**-11
 
 
 def test_logp():
@@ -33,7 +33,7 @@ def test_logp():
 def test_dlogp():
     start, model, (mu, sig) = simple_model()
     dlogp = model.fastdlogp()
-    close_to(dlogp(start), -(start["x"] - mu) / sig ** 2, 1.0 / sig ** 2 / 100.0)
+    close_to(dlogp(start), -(start["x"] - mu) / sig**2, 1.0 / sig**2 / 100.0)
 
 
 def test_dlogp2():
@@ -46,7 +46,7 @@ def test_dlogp2():
 def test_deterministic():
     with pm.Model() as model:
         x = pm.Normal("x", 0, 1)
-        y = pm.Deterministic("y", x ** 2)
+        y = pm.Deterministic("y", x**2)
 
     assert model.y == y
     assert model["y"] == y

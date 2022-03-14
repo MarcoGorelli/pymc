@@ -146,10 +146,10 @@ class PGBART(ArrayStepShared):
         # if data is binary
         Y_unique = np.unique(self.Y)
         if Y_unique.size == 2 and np.all(Y_unique == [0, 1]):
-            self.mu_std = 6 / (self.k * self.m ** 0.5)
+            self.mu_std = 6 / (self.k * self.m**0.5)
         # maybe we need to check for count data
         else:
-            self.mu_std = self.Y.std() / (self.k * self.m ** 0.5)
+            self.mu_std = self.Y.std() / (self.k * self.m**0.5)
 
         self.num_observations = self.X.shape[0]
         self.num_variates = self.X.shape[1]
@@ -376,7 +376,7 @@ def compute_prior_probability(alpha):
     prior_leaf_prob = [0]
     depth = 1
     while prior_leaf_prob[-1] < 1:
-        prior_leaf_prob.append(1 - alpha ** depth)
+        prior_leaf_prob.append(1 - alpha**depth)
         depth += 1
     return prior_leaf_prob
 
@@ -520,7 +520,7 @@ def fast_linear_fit():
         xbar = np.sum(X) / n
         ybar = np.sum(Y) / n
 
-        den = X @ X - n * xbar ** 2
+        den = X @ X - n * xbar**2
         if den > 1e-10:
             b = (X @ Y - n * xbar * ybar) / den
         else:

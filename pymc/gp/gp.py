@@ -1119,7 +1119,7 @@ class MarginalKron(Base):
         QTs = list(map(at.transpose, Qs))
         eigs = kron_diag(*eigs_sep)  # Combine separate eigs
         if sigma is not None:
-            eigs += sigma ** 2
+            eigs += sigma**2
 
         # New points
         Km = self.cov_func(Xnew, diag=diag)
