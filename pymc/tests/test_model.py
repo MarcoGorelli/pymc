@@ -58,7 +58,7 @@ class DocstringModel(pm.Model):
         self.register_rv(Normal.dist(mu=mean, sigma=sigma), "v1")
         Normal("v2", mu=mean, sigma=sigma)
         Normal("v3", mu=mean, sigma=Normal("sd", mu=10, sigma=1, initval=1.0))
-        Deterministic("v3_sq", self.v3 ** 2)
+        Deterministic("v3_sq", self.v3**2)
         Potential("p1", at.constant(1))
 
 
@@ -190,7 +190,7 @@ def test_duplicate_vars():
     with pytest.raises(ValueError) as err:
         with pm.Model():
             a = pm.Normal("a")
-            pm.Potential("a", a ** 2)
+            pm.Potential("a", a**2)
     err.match("already exists")
 
     with pytest.raises(ValueError) as err:

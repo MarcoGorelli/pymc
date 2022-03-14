@@ -229,13 +229,13 @@ def get_tau_sigma(tau=None, sigma=None):
             sigma = 1.0
             tau = 1.0
         else:
-            tau = sigma ** -2.0
+            tau = sigma**-2.0
 
     else:
         if sigma is not None:
             raise ValueError("Can't pass both tau and sigma")
         else:
-            sigma = tau ** -0.5
+            sigma = tau**-0.5
 
     return floatX(tau), floatX(sigma)
 
@@ -1207,7 +1207,7 @@ class Beta(UnitContinuous):
         if (alpha is not None) and (beta is not None):
             pass
         elif (mu is not None) and (sigma is not None):
-            kappa = mu * (1 - mu) / sigma ** 2 - 1
+            kappa = mu * (1 - mu) / sigma**2 - 1
             alpha = mu * kappa
             beta = (1 - mu) * kappa
         else:
@@ -1339,7 +1339,7 @@ class Kumaraswamy(UnitContinuous):
         -------
         TensorVariable
         """
-        logp = at.log(a) + at.log(b) + (a - 1) * at.log(value) + (b - 1) * at.log(1 - value ** a)
+        logp = at.log(a) + at.log(b) + (a - 1) * at.log(value) + (b - 1) * at.log(1 - value**a)
 
         return bound(logp, value >= 0, value <= 1, a > 0, b > 0)
 
@@ -1359,7 +1359,7 @@ class Kumaraswamy(UnitContinuous):
         -------
         TensorVariable
         """
-        logcdf = at.log1mexp(b * at.log1p(-(value ** a)))
+        logcdf = at.log1mexp(b * at.log1p(-(value**a)))
         return bound(at.switch(value < 1, logcdf, 0), value >= 0, a > 0, b > 0)
 
 
@@ -1538,9 +1538,9 @@ class AsymmetricLaplaceRV(RandomVariable):
     @classmethod
     def rng_fn(cls, rng, b, kappa, mu, size=None):
         u = rng.uniform(size=size)
-        switch = kappa ** 2 / (1 + kappa ** 2)
+        switch = kappa**2 / (1 + kappa**2)
         non_positive_x = mu + kappa * np.log(u * (1 / switch)) / b
-        positive_x = mu - np.log((1 - u) * (1 + kappa ** 2)) / (kappa * b)
+        positive_x = mu - np.log((1 - u) * (1 + kappa**2)) / (kappa * b)
         draws = non_positive_x * (u <= switch) + positive_x * (u > switch)
         return draws
 
@@ -1615,7 +1615,7 @@ class AsymmetricLaplace(Continuous):
         """
         value = value - mu
         return bound(
-            at.log(b / (kappa + (kappa ** -1)))
+            at.log(b / (kappa + (kappa**-1)))
             + (-value * b * at.sgn(value) * (kappa ** at.sgn(value))),
             0 < b,
             0 < kappa,
@@ -1705,7 +1705,7 @@ class LogNormal(PositiveContinuous):
         return super().dist([mu, sigma], *args, **kwargs)
 
     def get_moment(rv, size, mu, sigma):
-        mean = at.exp(mu + 0.5 * sigma ** 2)
+        mean = at.exp(mu + 0.5 * sigma**2)
         if not rv_size_is_none(size):
             mean = at.full(size, mean)
         return mean
@@ -1878,7 +1878,7 @@ class StudentT(Continuous):
         lam, sigma = get_tau_sigma(sigma=sigma)
 
         t = (value - mu) / sigma
-        sqrt_t2_nu = at.sqrt(t ** 2 + nu)
+        sqrt_t2_nu = at.sqrt(t**2 + nu)
         x = (t + sqrt_t2_nu) / (2.0 * sqrt_t2_nu)
 
         return bound(
@@ -2223,8 +2223,8 @@ class Gamma(PositiveContinuous):
         if (alpha is not None) and (beta is not None):
             pass
         elif (mu is not None) and (sigma is not None):
-            alpha = mu ** 2 / sigma ** 2
-            beta = mu / sigma ** 2
+            alpha = mu**2 / sigma**2
+            beta = mu / sigma**2
         else:
             raise ValueError(
                 "Incompatible parameterization. Either use "
@@ -2351,8 +2351,8 @@ class InverseGamma(PositiveContinuous):
             else:
                 beta = 1
         elif (mu is not None) and (sigma is not None):
-            alpha = (2 * sigma ** 2 + mu ** 2) / sigma ** 2
-            beta = mu * (mu ** 2 + sigma ** 2) / sigma ** 2
+            alpha = (2 * sigma**2 + mu**2) / sigma**2
+            beta = mu * (mu**2 + sigma**2) / sigma**2
         else:
             raise ValueError(
                 "Incompatible parameterization. Either use "
@@ -2675,8 +2675,8 @@ class HalfStudentT(PositiveContinuous):
             at.log(2)
             + gammaln((nu + 1.0) / 2.0)
             - gammaln(nu / 2.0)
-            - 0.5 * at.log(nu * np.pi * sigma ** 2)
-            - (nu + 1.0) / 2.0 * at.log1p(value ** 2 / (nu * sigma ** 2)),
+            - 0.5 * at.log(nu * np.pi * sigma**2)
+            - (nu + 1.0) / 2.0 * at.log1p(value**2 / (nu * sigma**2)),
             sigma > 0,
             lam > 0,
             nu > 0,
@@ -2814,7 +2814,7 @@ class ExGaussian(Continuous):
                     -at.log(nu)
                     + (mu - value) / nu
                     + 0.5 * (sigma / nu) ** 2
-                    + normal_lcdf(mu + (sigma ** 2) / nu, sigma, value)
+                    + normal_lcdf(mu + (sigma**2) / nu, sigma, value)
                 ),
                 log_normal(value, mean=mu, sigma=sigma),
             ),
@@ -2853,7 +2853,7 @@ class ExGaussian(Continuous):
                     (
                         (mu - value) / nu
                         + 0.5 * (sigma / nu) ** 2
-                        + normal_lcdf(mu + (sigma ** 2) / nu, sigma, value)
+                        + normal_lcdf(mu + (sigma**2) / nu, sigma, value)
                     ),
                 ),
                 normal_lcdf(mu, sigma, value),
@@ -3782,7 +3782,7 @@ class Moyal(Continuous):
         """
         scaled = (value - mu) / sigma
         return bound(
-            at.log(at.erfc(at.exp(-scaled / 2) * (2 ** -0.5))),
+            at.log(at.erfc(at.exp(-scaled / 2) * (2**-0.5))),
             0 < sigma,
         )
 

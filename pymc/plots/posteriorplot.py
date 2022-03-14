@@ -32,7 +32,7 @@ def plot_posterior_predictive_glm(
     eval: np.ndarray | None = None,
     lm: Callable | None = None,
     samples: int = 30,
-    **kwargs: Any
+    **kwargs: Any,
 ) -> None:
     """Plot posterior predictive of a linear model.
 

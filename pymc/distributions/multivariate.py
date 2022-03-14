@@ -137,7 +137,7 @@ def quaddist_chol(delta, chol_mat):
     chol_cov = at.switch(ok, chol_mat, 1)
 
     delta_trans = solve_lower(chol_cov, delta.T).T
-    quaddist = (delta_trans ** 2).sum(axis=-1)
+    quaddist = (delta_trans**2).sum(axis=-1)
     logdet = at.sum(at.log(diag))
     return quaddist, logdet, ok
 
@@ -151,7 +151,7 @@ def quaddist_tau(delta, chol_mat):
     chol_tau = at.switch(ok, chol_mat, 1)
 
     delta_trans = at.dot(delta, chol_tau)
-    quaddist = (delta_trans ** 2).sum(axis=-1)
+    quaddist = (delta_trans**2).sum(axis=-1)
     logdet = -at.sum(at.log(diag))
     return quaddist, logdet, ok
 
@@ -1024,14 +1024,14 @@ def _lkj_normalizing_constant(eta, n):
         result = gammaln(2.0 * at.arange(1, int((n - 1) / 2) + 1)).sum()
         if n % 2 == 1:
             result += (
-                0.25 * (n ** 2 - 1) * at.log(np.pi)
+                0.25 * (n**2 - 1) * at.log(np.pi)
                 - 0.25 * (n - 1) ** 2 * at.log(2.0)
                 - (n - 1) * gammaln(int((n + 1) / 2))
             )
         else:
             result += (
                 0.25 * n * (n - 2) * at.log(np.pi)
-                + 0.25 * (3 * n ** 2 - 4 * n) * at.log(2.0)
+                + 0.25 * (3 * n**2 - 4 * n) * at.log(2.0)
                 + n * gammaln(n / 2)
                 - (n - 1) * gammaln(n)
             )
@@ -1095,7 +1095,7 @@ class _LKJCholeskyCov(Continuous):
         eta = self.eta
 
         diag_idxs = self.diag_idxs
-        cumsum = at.cumsum(x ** 2)
+        cumsum = at.cumsum(x**2)
         variance = at.zeros(n)
         variance = at.inc_subtensor(variance[0], x[0] ** 2)
         variance = at.inc_subtensor(variance[1:], cumsum[diag_idxs[1:]] - cumsum[diag_idxs[:-1]])
@@ -1125,7 +1125,7 @@ class _LKJCholeskyCov(Continuous):
         beta = eta - 1.0 + n / 2.0
         r12 = 2.0 * stats.beta.rvs(a=beta, b=beta, size=eta_sample_shape) - 1.0
         P[..., 0, 1] = r12
-        P[..., 1, 1] = np.sqrt(1.0 - r12 ** 2)
+        P[..., 1, 1] = np.sqrt(1.0 - r12**2)
         for mp1 in range(2, n):
             beta -= 0.5
             y = stats.beta.rvs(a=mp1 / 2.0, b=beta, size=eta_sample_shape)
@@ -1462,7 +1462,7 @@ class LKJCorr(Continuous):
         r12 = 2.0 * stats.beta.rvs(a=beta, b=beta, size=size) - 1.0
         P = np.eye(n)[:, :, np.newaxis] * np.ones(size)
         P[0, 1] = r12
-        P[1, 1] = np.sqrt(1.0 - r12 ** 2)
+        P[1, 1] = np.sqrt(1.0 - r12**2)
         for mp1 in range(2, n):
             beta -= 0.5
             y = stats.beta.rvs(a=mp1 / 2.0, b=beta, size=size)
@@ -1781,7 +1781,7 @@ class KroneckerNormalRV(RandomVariable):
         cov = reduce(linalg.kron, covs)
 
         if sigma:
-            cov = cov + sigma ** 2 * np.eye(cov.shape[0])
+            cov = cov + sigma**2 * np.eye(cov.shape[0])
 
         x = multivariate_normal.rng_fn(rng=rng, mean=mu, cov=cov, size=size)
         return x
@@ -1937,7 +1937,7 @@ class KroneckerNormal(Continuous):
 
         eigs_sep = list(map(at.as_tensor_variable, eigs_sep))
         eigs = kron_diag(*eigs_sep)  # Combine separate eigs
-        eigs += sigma ** 2
+        eigs += sigma**2
         N = eigs.shape[0]
 
         sqrt_quad = kron_dot(QTs, delta.T)
